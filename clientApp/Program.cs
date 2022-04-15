@@ -1,6 +1,9 @@
+using OpenTelemetry.Trace;
 using Serilog;
 using Serilog.Enrichers.Span;
 using Serilog.Events;
+using OpenTelemetry.Exporter;
+using OpenTelemetry.Resources;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -16,7 +19,14 @@ try
 
     // Add services to the container.
     builder.Host.UseSerilog();
+
+    builder.Services.Configure<ZipkinExporterOptions>(builder.Configuration.GetSection("Zipkin"));
+
     builder.Services.AddControllersWithViews();
+    builder.Services.AddOpenTelemetryTracing(b => b
+        .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(builder.Configuration.GetValue<string>("Zipkin:ServiceName")))
+        .AddAspNetCoreInstrumentation()
+        .AddZipkinExporter());
     builder.Services.AddHttpClient();
 
     var app = builder.Build();

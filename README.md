@@ -1,5 +1,12 @@
 # distributed-tracing-demo
 
+
+## zipkin - docker 
+
+```
+docker run -d -p 9411:9411 openzipkin/zipkin-slim:2
+```
+
 ## REF
 
 1. [3.2 Traceparent Header](https://www.w3.org/TR/trace-context/#traceparent-header)

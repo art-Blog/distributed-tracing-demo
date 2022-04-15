@@ -1,3 +1,5 @@
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Serilog;
 using Serilog.Enrichers.Span;
 using Serilog.Events;
@@ -16,8 +18,12 @@ try
 
     // Add services to the container.
     builder.Host.UseSerilog();
-
+    
     builder.Services.AddControllers();
+    builder.Services.AddOpenTelemetryTracing(b => b
+        .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(builder.Configuration.GetValue<string>("Zipkin:ServiceName")))
+        .AddAspNetCoreInstrumentation()
+        .AddZipkinExporter());
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
