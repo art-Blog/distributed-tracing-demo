@@ -9,10 +9,12 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
     // .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+    .Enrich.FromLogContext()
     .Enrich.WithSpan()
     .WriteTo.Console()
     .WriteTo.Seq("http://localhost:5341")
     .CreateLogger();
+
 try
 {
     var builder = WebApplication.CreateBuilder(args);
