@@ -1,9 +1,9 @@
 using OpenTelemetry.Trace;
 using Serilog;
 using Serilog.Enrichers.Span;
-using Serilog.Events;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Resources;
+using Serilog.Events;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()

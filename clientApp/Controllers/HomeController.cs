@@ -15,14 +15,15 @@ public class HomeController : Controller
         _httpClient = httpClientFactory.CreateClient();
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
-        var proxyResult = await GetWeatherForecast("https://localhost:7036/weatherforecastproxy");
-        return View("Index", proxyResult);
+        return View();
     }
 
-    private async Task<string> GetWeatherForecast(string proxyUrl)
+    public async Task<IActionResult> Weather()
     {
-        return await _httpClient.GetStringAsync(proxyUrl);
+        const string url = "https://localhost:7036/weatherforecastproxy";
+        var proxyResult = await _httpClient.GetStringAsync(url);
+        return View("Weather", proxyResult);
     }
 }
